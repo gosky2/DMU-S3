@@ -95,4 +95,7 @@ npm run preview
 
 ---
 
+1번 과제 영상 = https://youtu.be/QfDh5ErRAUQ
+2번 과제 영상 = https://youtu.be/NBUeMve7PW0
+
 작성자: 이하늘
