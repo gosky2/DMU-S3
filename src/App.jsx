@@ -76,7 +76,7 @@ export default function App() {
     <div className="app-shell">
       <aside className="app-sidebar">
         <div className="app-brand">
-          <h1>도서관 대출 관리</h1>
+          <h1>테스트중입니다.</h1>
           <p>정적 웹 · localStorage</p>
         </div>
         <StatsCards
