@@ -1,21 +1,21 @@
 # 도서관 대출 관리 시스템
 
-## 1. 시스템 소개
+## 시스템 소개
 
-React로 구현한 정적 웹 기반 도서관 대출 관리 시스템입니다.  
-사용자는 도서를 검색하고, 대출/반납 상태를 관리할 수 있습니다.
+본 프로젝트는 **도서 목록 조회·검색·대출/반납·통계**를 한 화면에서 관리할 수 있는 **정적 웹 기반 도서관 대출 관리 시스템**입니다. 백엔드 없이 브라우저에서 동작하며, **생성형 AI(Cursor 등)의 도움을 받아** 요구사항을 정리한 뒤 **React**로 UI와 상태 관리 로직을 구현했습니다.
 
-## 2. 주요 기능
+## 주요 기능
 
 - 도서 목록 조회
-- 도서 검색 (제목 / 저자 / 카테고리)
+- 제목·저자·카테고리 검색
 - 대출 가능 / 대출 중 필터
-- 대출 및 반납 처리 (버튼 클릭 시 즉시 반영)
+- 대출하기·반납하기 (버튼 클릭 시 즉시 반영)
 - 현재 대출 목록 패널
-- localStorage 기반 상태 저장 (새로고침 후에도 유지)
-- 대출 현황 통계 (전체 도서 수, 대출 가능 도서 수, 대출 중 도서 수)
+- 대출 현황 통계 카드 (전체·대출 가능·대출 중)
+- **localStorage**에 도서 상태 저장 (새로고침 후에도 유지)
+- 관리자 대시보드 스타일의 **반응형 UI**
 
-## 3. 사용 기술
+## 사용 기술
 
 - React
 - Vite
@@ -25,46 +25,73 @@ React로 구현한 정적 웹 기반 도서관 대출 관리 시스템입니다.
 - GitHub Actions
 - AWS Amplify
 
-## 4. CI/CD 환경 (GitHub Actions → S3)
+## Github Repository
 
-이 저장소는 **GitHub Actions**로 **React(Vite) 빌드 결과물**을 **AWS S3 정적 웹 사이트 호스팅** 버킷에 자동 배포합니다.
+https://github.com/gosky2/DMU-S3
 
-- **워크플로 파일:** `.github/workflows/deploy.yml`
-- **트리거:** `main` 브랜치에 `push`될 때마다 워크플로가 실행됩니다.
-- **빌드:** `npm install` → `npm run build` (산출물은 `dist/`)
-- **배포:** `aws s3 sync ./dist s3://<버킷명> --delete` 로 동기화합니다. 버킷명은 **코드에 넣지 않고** GitHub Secrets의 `AWS_S3_BUCKET` 값을 사용합니다.
-- **AWS Academy:** 임시 자격 증명을 사용하므로 `AWS_SESSION_TOKEN` Secret을 **반드시** 설정합니다.
+## CI/CD 환경 소개
 
-### GitHub Secrets 등록 방법
+- **GitHub Actions**를 사용하여 **`main` 브랜치에 `push`될 때마다** 자동으로 의존성 설치·빌드·배포가 실행됩니다.
+- 배포 대상은 **AWS S3 정적 웹 사이트 호스팅** 버킷입니다.
+- AWS 액세스 키·리전·버킷명 등은 코드에 넣지 않고, **GitHub Repository Secrets**로만 전달합니다. (AWS Academy 등 **임시 자격 증명** 사용 시 `AWS_SESSION_TOKEN`도 Secret으로 설정합니다.)
 
-GitHub 저장소 **Settings → Secrets and variables → Actions → New repository secret** 에서 아래 이름으로 등록합니다.  
-**실제 액세스 키·시크릿·토큰·버킷명 값은 README나 코드에 적지 말고**, 각자 GitHub에만 저장합니다.
+## AWS 배포 URL
 
-| Secret 이름 | 설명 |
-|-------------|------|
-| `AWS_ACCESS_KEY_ID` | AWS 액세스 키 ID |
-| `AWS_SECRET_ACCESS_KEY` | AWS 시크릿 액세스 키 |
-| `AWS_SESSION_TOKEN` | 세션 토큰 (AWS Academy 등) |
-| `AWS_S3_BUCKET` | 정적 웹 사이트 호스팅에 사용하는 S3 버킷 이름 |
-| `AWS_REGION` | 리전 (예: `us-east-1` — **기본 예시는 us-east-1**이며, 실제 버킷 리전과 일치하도록 설정) |
+**S3 정적 웹 사이트 엔드포인트 URL**을 아래에 기입합니다. (AWS 콘솔 → S3 → 해당 버킷 → **속성** → **정적 웹 사이트 호스팅**에서 확인)
 
-### AWS Amplify (선택)
+```
+(여기에 본인 S3 웹사이트 URL 붙여넣기)
+```
 
-동일 저장소를 Amplify Hosting에 연결할 경우, 루트의 `amplify.yml`을 빌드 스펙으로 사용할 수 있습니다.
+> 과제 제출 시 위 한 줄을 실제 URL로 교체하세요. 예시 형식: `http://<버킷명>.s3-website-<리전>.amazonaws.com/` (리전·엔드포인트 표기는 콘솔 안내를 따릅니다.)
 
-**로컬 개발:** `npm install`, `npm run dev` / 프로덕션 산출물 확인: `npm run build`
+## Github Actions Workflow 설명
 
-## 5. 배포 URL
+워크플로 파일: `.github/workflows/deploy.yml`
 
-아래 항목에 **S3 정적 웹 사이트 호스팅**에서 확인한 URL을 붙여 넣습니다. (형식 예: `http://<버킷명>.s3-website-<리전>.amazonaws.com/` 등, 콘솔에 표시되는 주소 사용)
+1. **`npm install`**: 패키지 의존성 설치  
+2. **`npm run build`**: Vite로 프로덕션 빌드 실행  
+3. **`dist` 폴더 생성**: 정적 파일(`index.html`, JS/CSS 등)이 `dist/`에 출력됨  
+4. **`aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET }} --delete`**: `dist` 내용을 S3 버킷과 동기화(삭제 포함)하여 자동 업로드
 
-- **S3 정적 웹 사이트 URL:** `여기에 작성`
-- Amplify URL(사용 시): `여기에 작성`
+## 프로젝트 구조
 
-## 6. 시연 영상
+```
+.
+├── .github/workflows/deploy.yml   # GitHub Actions 배포 워크플로
+├── amplify.yml                    # AWS Amplify 연동 시 빌드 스펙(선택)
+├── index.html
+├── package.json
+├── vite.config.js
+├── public/
+│   └── vite.svg
+└── src/
+    ├── App.jsx
+    ├── App.css
+    ├── main.jsx
+    ├── index.css
+    ├── components/
+    │   ├── BookTable.jsx
+    │   ├── StatsCards.jsx
+    │   └── Toolbar.jsx
+    └── data/
+        ├── books.js               # 초기 샘플 도서 데이터
+        └── storage.js             # localStorage 읽기/쓰기
+```
 
-- GitHub Actions CI/CD 시연 영상: `YouTube 링크 (제출 전 교체)`
-- AWS Amplify 호스팅 시연 영상: `YouTube 링크 (제출 전 교체)`
+## 실행 방법
+
+```bash
+npm install
+npm run dev
+```
+
+프로덕션 빌드만 확인할 때:
+
+```bash
+npm run build
+npm run preview
+```
 
 ---
 
