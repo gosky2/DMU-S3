@@ -40,10 +40,8 @@ https://github.com/gosky2/DMU-S3
 **S3 정적 웹 사이트 엔드포인트 URL**을 아래에 기입합니다. (AWS 콘솔 → S3 → 해당 버킷 → **속성** → **정적 웹 사이트 호스팅**에서 확인)
 
 ```
-(여기에 본인 S3 웹사이트 URL 붙여넣기)
+https://main.d23q8h7kiboghf.amplifyapp.com/
 ```
-
-> 과제 제출 시 위 한 줄을 실제 URL로 교체하세요. 예시 형식: `http://<버킷명>.s3-website-<리전>.amazonaws.com/` (리전·엔드포인트 표기는 콘솔 안내를 따릅니다.)
 
 ## Github Actions Workflow 설명
 
@@ -59,7 +57,7 @@ https://github.com/gosky2/DMU-S3
 ```
 .
 ├── .github/workflows/deploy.yml   # GitHub Actions 배포 워크플로
-├── amplify.yml                    # AWS Amplify 연동 시 빌드 스펙(선택)
+├── amplify.yml                    
 ├── index.html
 ├── package.json
 ├── vite.config.js
